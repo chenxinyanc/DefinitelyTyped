@@ -376,9 +376,15 @@ myComponent.reset();
 // --------------------------------------------------------------------------
 
 // tslint:disable-next-line:no-empty-interface
-interface RCProps { }
+interface RCProps {
+    someElementRef?: React.Ref<HTMLDivElement>;
+}
 
-class RefComponent extends React.Component<RCProps> {
+interface IRefComponent {
+    refMethod(): void;
+}
+
+class RefComponent extends React.Component<RCProps> implements IRefComponent {
     static create = React.createFactory(RefComponent);
     refMethod() {
     }
@@ -397,6 +403,16 @@ DOM.div({ ref: node => domNodeRef = node });
 
 let inputNodeRef: HTMLInputElement | null;
 DOM.input({ ref: node => inputNodeRef = node as HTMLInputElement });
+
+// Ref contravariance
+RefComponent.create({
+    ref: (current: IRefComponent | null) => { },
+    someElementRef: (current: HTMLElement | null) => { },
+});
+RefComponent.create({
+    ref: React.createRef<IRefComponent>(),
+    someElementRef: React.createRef<HTMLElement>()
+});
 
 interface ForwardingRefComponentProps {
     hello: string;
@@ -750,7 +766,7 @@ React.createFactory(TransitionGroup)({ component: "div" });
 //
 // Events
 // --------------------------------------------------------------------------
-function eventHandler<T extends React.BaseSyntheticEvent>(e: T) {}
+function eventHandler<T extends React.BaseSyntheticEvent>(e: T) { }
 
 function handler(e: React.MouseEvent) {
     eventHandler(e);

@@ -23,6 +23,7 @@
 //                 Kyle Scully <https://github.com/zieka>
 //                 Cong Zhang <https://github.com/dancerphil>
 //                 Dimitri Mitropoulos <https://github.com/dimitropoulos>
+//                 Xinyan Chen <https://github.com/chenxinyanc>
 // Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 // TypeScript Version: 2.8
 
@@ -85,7 +86,7 @@ declare namespace React {
     type Key = string | number;
 
     interface RefObject<T> {
-        readonly current: T | null;
+        readonly current: Partial<T> | null;
     }
     type RefCallback<T> = { bivarianceHack(instance: T | null): void }["bivarianceHack"];
     type Ref<T> = RefCallback<T> | RefObject<T> | null;
